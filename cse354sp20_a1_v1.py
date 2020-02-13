@@ -27,12 +27,39 @@ def tokenize(sent):
 ##################################################################
 #2. Pig Latinizer
 
+v = ['A', 'a', 'E', 'e', 'I', 'i', 'O', 'o', 'U', 'u']
+c = ['B', 'b', 'C', 'c', 'D', 'd', 'F', 'f', 'G', 'g', 'H', 'h', 'J', 'j', \
+'K', 'k', 'L', 'l', 'M', 'm', 'N', 'n', 'P', 'p', 'Q', 'q', 'R', 'r', 'S', \
+'s', 'T', 't', 'V', 'v', 'W', 'w', 'X', 'x', 'Y', 'y', 'Z', 'z']
+
+#if starts with consonant - append initial consecutive consonants to end
+#append 'ay'
+def pigLatinizeCToken(token):
+    for char in token:
+        if not char in c:
+            return token[token.find(char):] + \
+            token[:token.find(char)] + 'ay'
+    return token + 'ay'
+
 def pigLatinizer(tokens):
     #input: tokens: a list of tokens,
     #output: plTokens: tokens after transforming to pig latin
 
     plTokens = []
-    #<FILL IN>
+
+    for token in tokens:
+        if len(token) < 1 or not token.isalpha():
+            plTokens.append(token)
+
+        #if starts with vowel - append 'way'
+        elif token[0] in v:
+            plTokens.append(token + 'way')
+
+        elif token[0] in c:
+            plTokens.append(pigLatinizeCToken(token))
+
+        else:
+            plTokens.append(token)
 
     return plTokens
 
