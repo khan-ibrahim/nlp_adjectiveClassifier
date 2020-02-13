@@ -70,6 +70,15 @@ def pigLatinizer(tokens):
 
 import numpy as np
 
+def numVowelsAndCapitals(token):
+    numV = numC = 0
+    for char in token:
+        if char in v:
+            numV+=1
+        elif char in c:
+            numC+=1
+    return(numV, numC)
+
 def getFeaturesForTokens(tokens, wordToIndex):
     #input: tokens: a list of tokens,
     #wordToIndex: dict mapping 'word' to an index in the feature list.
@@ -78,6 +87,8 @@ def getFeaturesForTokens(tokens, wordToIndex):
     num_words = len(tokens)
     featuresPerTarget = list() #holds arrays of feature per word
     for targetI in range(num_words):
+        currentToken = tokens[targetI]
+        numV, numC = numVowelsAndCapitals(currentToken)
         #<FILL IN>
         pass
         #featuresPerTarget[targetI] = ...
