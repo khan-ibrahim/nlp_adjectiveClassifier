@@ -17,7 +17,9 @@ def tokenize(sent):
     # must use regular expressions
 
     tokens = []
-    #<FILL IN>
+    pattern = r'''[@#0-9A-Za-z\.'\-]+'''
+    ## TODO: fix tokenizer to account for abbreviations ie. S.B.U.
+    tokens = re.findall(pattern, sent)
 
     return tokens
 
@@ -31,9 +33,9 @@ def pigLatinizer(tokens):
 
     plTokens = []
     #<FILL IN>
-        
+
     return plTokens
-    
+
 
 ##################################################################
 #3. Feature Extractor
@@ -117,13 +119,13 @@ if __name__== '__main__':
     print("\n[ Pig Latin Test ]\n")
     for ts in tokenizedSents:
         print(ts, pigLatinizer(ts), "\n")
-        
+
     #load data for 3 and 4 the adjective classifier data:
     taggedSents = getConllTags('daily547.conll')
 
     #3. Test Feature Extraction:
     print("\n[ Feature Extraction Test ]\n")
-    #first make word to index mapping: 
+    #first make word to index mapping:
     wordToIndex = set() #maps words to an index
     for sent in taggedSents:
         if sent:
@@ -140,7 +142,7 @@ if __name__== '__main__':
     for sent in taggedSents:
         if sent:
             words, tags = zip(*sent)
-            sentXs.append(getFeaturesForTokens(words, wordToIndex)) 
+            sentXs.append(getFeaturesForTokens(words, wordToIndex))
             sentYs.append([1 if t == 'A' else 0 for t in tags])
     #test sentences
     print("\n", taggedSents[5], "\n", sentXs[5], "\n")
@@ -151,10 +153,10 @@ if __name__== '__main__':
     print("\n[ Feature Extraction Test ]\n")
     #setup train/test:
     from sklearn.model_selection import train_test_split
-    #flatten by word rather than sent: 
+    #flatten by word rather than sent:
     X = [j for i in sentXs for j in i]
     y= [j for i in sentYs for j in i]
-    try: 
+    try:
         X_train, X_test, y_train, y_test = train_test_split(X, y,
                                                             test_size=0.20,
                                                             random_state=42)
@@ -167,7 +169,7 @@ if __name__== '__main__':
     print("  [Training the model]")
     tagger = trainAdjectiveClassifier(X_train, y_train)
     print("  [Done]")
-    
+
 
     #Test the tagger.
     from sklearn.metrics import classification_report
@@ -179,6 +181,3 @@ if __name__== '__main__':
     acc = np.sum([1 if (y_pred[i] == y_test[i]) else 0 for i in range(leny)]) / leny
     print("Accuracy: %.4f" % acc)
     print(classification_report(y_test, y_pred, ['not_adj', 'adjective']))
-    
-
-                                                                                                                                    
