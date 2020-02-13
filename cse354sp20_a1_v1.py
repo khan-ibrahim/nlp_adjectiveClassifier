@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 
 #!/usr/bin/python3
-# CSE354 Sp20; Assignment 1 Template v1
+# CSE354 Sp20; Assignment 1 Template v02
 ##################################################################
+_version_ = 0.2
 
 import sys
 
@@ -129,6 +130,7 @@ def getConllTags(filename):
 
 # Main
 if __name__== '__main__':
+    print("Initiating test. Version " , _version_)
     #Data for 1 and 2
     testSents = ['I am attending NLP class 2 days a week at S.B.U. this Spring.',
                  "I don't think data-driven computational linguistics is very tough.",
@@ -157,7 +159,7 @@ if __name__== '__main__':
     for sent in taggedSents:
         if sent:
             words, tags = zip(*sent) #splits [(w, t), (w, t)] into [w, w], [t, t]
-            wordToIndex |= set(words) #union of the words into the set
+            wordToIndex |= set([w.lower() for w in words]) #union of the words into the set
     print("  [Read ", len(taggedSents), " Sentences]")
     #turn set into dictionary: word: index
     wordToIndex = {w: i for i, w in enumerate(wordToIndex)}
@@ -177,14 +179,15 @@ if __name__== '__main__':
 
 
     #4. Test Classifier Model Building
-    print("\n[ Feature Extraction Test ]\n")
+    print("\n[ Classifier Test ]\n")
     #setup train/test:
     from sklearn.model_selection import train_test_split
     #flatten by word rather than sent:
     X = [j for i in sentXs for j in i]
     y= [j for i in sentYs for j in i]
     try:
-        X_train, X_test, y_train, y_test = train_test_split(X, y,
+        X_train, X_test, y_train, y_test = train_test_split(np.array(X),
+                                                            np.array(y),
                                                             test_size=0.20,
                                                             random_state=42)
     except ValueError:
