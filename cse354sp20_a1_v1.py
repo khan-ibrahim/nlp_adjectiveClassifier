@@ -87,11 +87,52 @@ def getFeaturesForTokens(tokens, wordToIndex):
     num_words = len(tokens)
     featuresPerTarget = list() #holds arrays of feature per word
     for targetI in range(num_words):
-        currentToken = tokens[targetI]
+        currentToken = tokens[targetI].lower()
+        #print('current:{}'.format(currentToken))
+        #print('LEN ' + str(len(wordToIndex)))
+
+        #count num vowels and consonants
         numV, numC = numVowelsAndCapitals(currentToken)
-        #<FILL IN>
-        pass
-        #featuresPerTarget[targetI] = ...
+
+        currentOneHot = np.zeros(len(wordToIndex))
+        prevOneHot = np.zeros(len(wordToIndex))
+        nextOneHot = np.zeros(len(wordToIndex))
+
+        #Produce one-hot encodings of current word
+        if currentToken in wordToIndex:
+            currentOneHot[wordToIndex[currentToken]] == 1
+        else:
+            print('''Current token:'{}' not found'''.format(currentToken))
+            currentIndex = -1
+
+        #Produce one-hot encodings of previous and next word
+        prevI = targetI - 1
+        nextI = targetI + 1
+
+        if prevI >= 0:
+            prevToken = tokens[prevI].lower()
+            if prevToken in wordToIndex:
+                prevOneHot[wordToIndex[prevToken]] = 1
+            else:
+                print('''Previous token:'{}' not found'''.format(prevToken))
+                prevousIndex = -1
+        else:
+            previousIndex = -2
+
+        if nextI < num_words:
+            nextToken = tokens[nextI].lower()
+            if nextToken in wordToIndex:
+                nextOneHot[wordToIndex[nextToken]] = 1
+            else:
+                print('''Next token:'{}' not found'''.format(nextToken))
+                nextIndex = -1
+        else:
+            nextIndex = -2
+
+        #combine features of current target into one long flat vector;
+        #and add target feature vector to list
+        featuresPerTarget.append(np.concatenate(([numV], [numC], currentOneHot, \
+        prevOneHot, nextOneHot)))
 
     return featuresPerTarget #a (num_words x k) matrix
 
