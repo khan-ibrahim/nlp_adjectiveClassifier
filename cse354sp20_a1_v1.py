@@ -70,7 +70,7 @@ def pigLatinizer(tokens):
 
 import numpy as np
 
-def numVowelsAndCapitals(token):
+def getNumVowelsAndNumConsonants(token):
     numV = numC = 0
     for char in token:
         if char in v:
@@ -92,7 +92,7 @@ def getFeaturesForTokens(tokens, wordToIndex):
         #print('LEN ' + str(len(wordToIndex)))
 
         #count num vowels and consonants
-        numV, numC = numVowelsAndCapitals(currentToken)
+        numV, numC = getNumVowelsAndNumConsonants(currentToken)
 
         currentOneHot = np.zeros(len(wordToIndex))
         prevOneHot = np.zeros(len(wordToIndex))
