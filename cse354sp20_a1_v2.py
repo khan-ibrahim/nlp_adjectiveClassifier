@@ -147,7 +147,7 @@ def trainAdjectiveClassifier(features, adjs):
     #        adjs: whether adjective or not: [0, 1] (i.e. y)
     #output: model -- a trained sklearn.linear_model.LogisticRegression object
 
-    model = None
+    model = LogisticRegression().fit(features, adjs)
     #<FILL IN>
 
     return model
