@@ -18,7 +18,7 @@ def tokenize(sent):
     # must use regular expressions
 
     tokens = []
-    pattern = r'''(?:[A-Z]\.)+|\.|[-@#'’1-9A-Za-z]+'''
+    pattern = r'''(?:[A-Z]\.)+|[\.?!;]|[-@#'’1-9A-Za-z]+'''
     ## TODO: fix tokenizer to account for abbreviations ie. S.B.U.
     tokens = re.findall(pattern, sent)
 
