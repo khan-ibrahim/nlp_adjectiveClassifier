@@ -28,10 +28,10 @@ def tokenize(sent):
 ##################################################################
 #2. Pig Latinizer
 
-v = ['A', 'a', 'E', 'e', 'I', 'i', 'O', 'o', 'U', 'u']
-c = ['B', 'b', 'C', 'c', 'D', 'd', 'F', 'f', 'G', 'g', 'H', 'h', 'J', 'j', \
+v = {'A', 'a', 'E', 'e', 'I', 'i', 'O', 'o', 'U', 'u'}
+c = {'B', 'b', 'C', 'c', 'D', 'd', 'F', 'f', 'G', 'g', 'H', 'h', 'J', 'j', \
 'K', 'k', 'L', 'l', 'M', 'm', 'N', 'n', 'P', 'p', 'Q', 'q', 'R', 'r', 'S', \
-'s', 'T', 't', 'V', 'v', 'W', 'w', 'X', 'x', 'Y', 'y', 'Z', 'z']
+'s', 'T', 't', 'V', 'v', 'W', 'w', 'X', 'x', 'Y', 'y', 'Z', 'z'}
 
 #if starts with consonant - append initial consecutive consonants to end
 #append 'ay'
