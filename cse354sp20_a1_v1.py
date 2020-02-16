@@ -262,4 +262,4 @@ if __name__== '__main__':
     print("test n: ", leny)
     acc = np.sum([1 if (y_pred[i] == y_test[i]) else 0 for i in range(leny)]) / leny
     print("Accuracy: %.4f" % acc)
-    print(classification_report(y_test, y_pred, ['not_adj', 'adjective']))
+    #print(classification_report(y_test, y_pred, ['not_adj', 'adjective']))
