@@ -141,13 +141,44 @@ def getFeaturesForTokens(tokens, wordToIndex):
 #4. Adjective Classifier
 
 from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+
+def trainPenalization(x_train, x_dev, y_train, y_dev, C=1):
+    classifier = LogisticRegression(C=C, penalty='l1', solver='liblinear')
+    classifier.fit(x_train, y_train)
+
+    y_pred = classifier.predict(x_dev)
+
+    accuracy = np.sum([1 if (y_pred[i] == y_dev[i]) else 0 for i in range(len(y_dev))]) / len(y_dev)
+    #print("C: {}; Accuracy: {}".format(C, accuracy))
+
+    return accuracy
 
 def trainAdjectiveClassifier(features, adjs):
     #inputs: features: feature vectors (i.e. X)
     #        adjs: whether adjective or not: [0, 1] (i.e. y)
     #output: model -- a trained sklearn.linear_model.LogisticRegression object
 
-    model = LogisticRegression().fit(features, adjs)
+    model = None
+    bestAccuracy = None
+    bestC = None
+    Cs = [0.00001, 0.0001, 0.001, 0.1, 1.0, 10.0, 100.0, 1000.0, 10000.0]
+
+    x_train, x_dev, y_train, y_dev = train_test_split(features, adjs, \
+    test_size=0.1, random_state=42)
+
+    print('train len:{} vs dev len:{}'.format(len(x_train), len(x_dev)))
+
+    for C in Cs:
+        currentAccuracy = trainPenalization(x_train, x_dev, y_train, y_dev, C=C)
+        if bestAccuracy == None or bestAccuracy < currentAccuracy:
+            bestAccuracy = currentAccuracy
+            bestC = C
+
+    model = LogisticRegression(C=bestC, penalty='l1', solver='liblinear')
+    model.fit(features, adjs)
+
+    #model = LogisticRegression().fit(features, adjs)
     #<FILL IN>
 
     return model
