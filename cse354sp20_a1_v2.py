@@ -150,7 +150,7 @@ def trainPenalization(x_train, x_dev, y_train, y_dev, C=1):
     y_pred = classifier.predict(x_dev)
 
     accuracy = np.sum([1 if (y_pred[i] == y_dev[i]) else 0 for i in range(len(y_dev))]) / len(y_dev)
-    #print("C: {}; Accuracy: {}".format(C, accuracy))
+    #print("C: {};\t Accuracy: {}".format(C, accuracy))
 
     return accuracy
 
@@ -162,7 +162,7 @@ def trainAdjectiveClassifier(features, adjs):
     model = None
     bestAccuracy = None
     bestC = None
-    Cs = [0.00001, 0.0001, 0.001, 0.1, 1.0, 10.0, 100.0, 1000.0, 10000.0]
+    Cs = [0.00001, 0.0001, 0.001, 0.1, 1.0, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0]
 
     x_train, x_dev, y_train, y_dev = train_test_split(features, adjs, \
     test_size=0.1, random_state=42)
@@ -171,9 +171,11 @@ def trainAdjectiveClassifier(features, adjs):
 
     for C in Cs:
         currentAccuracy = trainPenalization(x_train, x_dev, y_train, y_dev, C=C)
-        if bestAccuracy == None or bestAccuracy < currentAccuracy:
+        if bestAccuracy == None or ((not currentAccuracy == None) and (bestAccuracy < currentAccuracy)):
             bestAccuracy = currentAccuracy
             bestC = C
+
+    #print('Best C found to be {}'.format(bestC))
 
     model = LogisticRegression(C=bestC, penalty='l1', solver='liblinear')
     model.fit(features, adjs)
