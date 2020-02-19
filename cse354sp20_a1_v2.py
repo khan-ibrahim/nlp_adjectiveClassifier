@@ -167,7 +167,7 @@ def trainAdjectiveClassifier(features, adjs):
     x_train, x_dev, y_train, y_dev = train_test_split(features, adjs, \
     test_size=0.1, random_state=42)
 
-    print('train len:{} vs dev len:{}'.format(len(x_train), len(x_dev)))
+    #print('train len:{} vs dev len:{}'.format(len(x_train), len(x_dev)))
 
     for C in Cs:
         currentAccuracy = trainPenalization(x_train, x_dev, y_train, y_dev, C=C)
